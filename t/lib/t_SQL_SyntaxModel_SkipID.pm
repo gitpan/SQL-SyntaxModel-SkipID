@@ -27,27 +27,27 @@ sub create_and_populate_model {
 		{ 'name' => 'str30' , 'base_type' => 'STR_CHAR', 'max_chars' =>    30, 
 			'char_enc' => 'ASCII', 'trim_white' => 1, },
 		{ 'name' => 'str2k' , 'base_type' => 'STR_CHAR', 'max_chars' => 2_000, 'char_enc' => 'UTF8', },
-		{ 'name' => 'byte' , 'base_type' => 'NUM_INT', 'num_scale' =>  3, },
-		{ 'name' => 'short', 'base_type' => 'NUM_INT', 'num_scale' =>  5, },
-		{ 'name' => 'int'  , 'base_type' => 'NUM_INT', 'num_scale' => 10, },
-		{ 'name' => 'long' , 'base_type' => 'NUM_INT', 'num_scale' => 19, },
-		{ 'name' => 'ubyte' , 'base_type' => 'NUM_INT', 'num_scale' =>  3, 'num_unsigned' => 1, },
-		{ 'name' => 'ushort', 'base_type' => 'NUM_INT', 'num_scale' =>  5, 'num_unsigned' => 1, },
-		{ 'name' => 'uint'  , 'base_type' => 'NUM_INT', 'num_scale' => 10, 'num_unsigned' => 1, },
-		{ 'name' => 'ulong' , 'base_type' => 'NUM_INT', 'num_scale' => 19, 'num_unsigned' => 1, },
+		{ 'name' => 'byte' , 'base_type' => 'NUM_INT', 'num_precision' =>  3, },
+		{ 'name' => 'short', 'base_type' => 'NUM_INT', 'num_precision' =>  5, },
+		{ 'name' => 'int'  , 'base_type' => 'NUM_INT', 'num_precision' => 10, },
+		{ 'name' => 'long' , 'base_type' => 'NUM_INT', 'num_precision' => 19, },
+		{ 'name' => 'ubyte' , 'base_type' => 'NUM_INT', 'num_precision' =>  3, 'num_unsigned' => 1, },
+		{ 'name' => 'ushort', 'base_type' => 'NUM_INT', 'num_precision' =>  5, 'num_unsigned' => 1, },
+		{ 'name' => 'uint'  , 'base_type' => 'NUM_INT', 'num_precision' => 10, 'num_unsigned' => 1, },
+		{ 'name' => 'ulong' , 'base_type' => 'NUM_INT', 'num_precision' => 19, 'num_unsigned' => 1, },
 		{ 'name' => 'float' , 'base_type' => 'NUM_APR', 'num_octets' => 4, },
 		{ 'name' => 'double', 'base_type' => 'NUM_APR', 'num_octets' => 8, },
-		{ 'name' => 'dec10p2', 'base_type' => 'NUM_EXA', 'num_scale' =>  10, 'num_precision' => 2, },
-		{ 'name' => 'dec255' , 'base_type' => 'NUM_EXA', 'num_scale' => 255, },
+		{ 'name' => 'dec10p2', 'base_type' => 'NUM_EXA', 'num_precision' =>  10, 'num_scale' => 2, },
+		{ 'name' => 'dec255' , 'base_type' => 'NUM_EXA', 'num_precision' => 255, },
 		{ 'name' => 'boolean', 'base_type' => 'BOOLEAN', },
 		{ 'name' => 'datetime', 'base_type' => 'DATM_FULL', 'calendar' => 'ABS', },
 		{ 'name' => 'dtchines', 'base_type' => 'DATM_FULL', 'calendar' => 'CHI', },
-		{ 'name' => 'sex'   , 'base_type' => 'STR_CHAR', 'max_chars' =>     1, },
-		{ 'name' => 'str20' , 'base_type' => 'STR_CHAR', 'max_chars' =>    20, },
-		{ 'name' => 'str100', 'base_type' => 'STR_CHAR', 'max_chars' =>   100, },
-		{ 'name' => 'str250', 'base_type' => 'STR_CHAR', 'max_chars' =>   250, },
-		{ 'name' => 'entitynm', 'base_type' => 'STR_CHAR', 'max_chars' =>  30, },
-		{ 'name' => 'generic' , 'base_type' => 'STR_CHAR', 'max_chars' => 250, },
+		{ 'name' => 'sex'   , 'base_type' => 'STR_CHAR', 'max_chars' =>     1, 'char_enc' => 'ASCII', },
+		{ 'name' => 'str20' , 'base_type' => 'STR_CHAR', 'max_chars' =>    20, 'char_enc' => 'ASCII', },
+		{ 'name' => 'str100', 'base_type' => 'STR_CHAR', 'max_chars' =>   100, 'char_enc' => 'ASCII', },
+		{ 'name' => 'str250', 'base_type' => 'STR_CHAR', 'max_chars' =>   250, 'char_enc' => 'ASCII', },
+		{ 'name' => 'entitynm', 'base_type' => 'STR_CHAR', 'max_chars' =>  30, 'char_enc' => 'ASCII', },
+		{ 'name' => 'generic' , 'base_type' => 'STR_CHAR', 'max_chars' => 250, 'char_enc' => 'ASCII', },
 	) ] );
 
 	$model->create_node_tree( { 'NODE_TYPE' => 'table', 
@@ -304,27 +304,27 @@ sub expected_model_xml_output {
 		<catalog id="1">
 			<owner id="1" catalog="1" />
 			<schema id="1" catalog="1" name="data" owner="1">
-				<domain id="1" schema="1" name="bin1k" base_type="STR_BIT" max_octets="1000" char_enc="ASCII" />
-				<domain id="2" schema="1" name="bin32k" base_type="STR_BIT" max_octets="32000" char_enc="ASCII" />
+				<domain id="1" schema="1" name="bin1k" base_type="STR_BIT" max_octets="1000" />
+				<domain id="2" schema="1" name="bin32k" base_type="STR_BIT" max_octets="32000" />
 				<domain id="3" schema="1" name="str4" base_type="STR_CHAR" max_chars="4" store_fixed="1" char_enc="ASCII" trim_white="1" uc_latin="1" pad_char=" " trim_pad="1" />
 				<domain id="4" schema="1" name="str10" base_type="STR_CHAR" max_chars="10" store_fixed="1" char_enc="ASCII" trim_white="1" pad_char=" " trim_pad="1" />
 				<domain id="5" schema="1" name="str30" base_type="STR_CHAR" max_chars="30" char_enc="ASCII" trim_white="1" />
 				<domain id="6" schema="1" name="str2k" base_type="STR_CHAR" max_chars="2000" char_enc="UTF8" />
-				<domain id="7" schema="1" name="byte" base_type="NUM_INT" num_scale="3" char_enc="ASCII" />
-				<domain id="8" schema="1" name="short" base_type="NUM_INT" num_scale="5" char_enc="ASCII" />
-				<domain id="9" schema="1" name="int" base_type="NUM_INT" num_scale="10" char_enc="ASCII" />
-				<domain id="10" schema="1" name="long" base_type="NUM_INT" num_scale="19" char_enc="ASCII" />
-				<domain id="11" schema="1" name="ubyte" base_type="NUM_INT" num_scale="3" num_unsigned="1" char_enc="ASCII" />
-				<domain id="12" schema="1" name="ushort" base_type="NUM_INT" num_scale="5" num_unsigned="1" char_enc="ASCII" />
-				<domain id="13" schema="1" name="uint" base_type="NUM_INT" num_scale="10" num_unsigned="1" char_enc="ASCII" />
-				<domain id="14" schema="1" name="ulong" base_type="NUM_INT" num_scale="19" num_unsigned="1" char_enc="ASCII" />
-				<domain id="15" schema="1" name="float" base_type="NUM_APR" num_octets="4" char_enc="ASCII" />
-				<domain id="16" schema="1" name="double" base_type="NUM_APR" num_octets="8" char_enc="ASCII" />
-				<domain id="17" schema="1" name="dec10p2" base_type="NUM_EXA" num_precision="2" num_scale="10" char_enc="ASCII" />
-				<domain id="18" schema="1" name="dec255" base_type="NUM_EXA" num_scale="255" char_enc="ASCII" />
-				<domain id="19" schema="1" name="boolean" base_type="BOOLEAN" char_enc="ASCII" />
-				<domain id="20" schema="1" name="datetime" base_type="DATM_FULL" char_enc="ASCII" calendar="ABS" />
-				<domain id="21" schema="1" name="dtchines" base_type="DATM_FULL" char_enc="ASCII" calendar="CHI" />
+				<domain id="7" schema="1" name="byte" base_type="NUM_INT" num_precision="3" />
+				<domain id="8" schema="1" name="short" base_type="NUM_INT" num_precision="5" />
+				<domain id="9" schema="1" name="int" base_type="NUM_INT" num_precision="10" />
+				<domain id="10" schema="1" name="long" base_type="NUM_INT" num_precision="19" />
+				<domain id="11" schema="1" name="ubyte" base_type="NUM_INT" num_precision="3" num_unsigned="1" />
+				<domain id="12" schema="1" name="ushort" base_type="NUM_INT" num_precision="5" num_unsigned="1" />
+				<domain id="13" schema="1" name="uint" base_type="NUM_INT" num_precision="10" num_unsigned="1" />
+				<domain id="14" schema="1" name="ulong" base_type="NUM_INT" num_precision="19" num_unsigned="1" />
+				<domain id="15" schema="1" name="float" base_type="NUM_APR" num_octets="4" />
+				<domain id="16" schema="1" name="double" base_type="NUM_APR" num_octets="8" />
+				<domain id="17" schema="1" name="dec10p2" base_type="NUM_EXA" num_precision="10" num_scale="2" />
+				<domain id="18" schema="1" name="dec255" base_type="NUM_EXA" num_precision="255" />
+				<domain id="19" schema="1" name="boolean" base_type="BOOLEAN" />
+				<domain id="20" schema="1" name="datetime" base_type="DATM_FULL" calendar="ABS" />
+				<domain id="21" schema="1" name="dtchines" base_type="DATM_FULL" calendar="CHI" />
 				<domain id="22" schema="1" name="sex" base_type="STR_CHAR" max_chars="1" char_enc="ASCII" />
 				<domain id="23" schema="1" name="str20" base_type="STR_CHAR" max_chars="20" char_enc="ASCII" />
 				<domain id="24" schema="1" name="str100" base_type="STR_CHAR" max_chars="100" char_enc="ASCII" />

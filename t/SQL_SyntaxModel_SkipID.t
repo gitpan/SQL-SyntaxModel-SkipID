@@ -5,9 +5,10 @@
 
 BEGIN { $| = 1; print "1..5\n"; }
 END {print "not ok 1\n" unless $loaded;}
+use lib 't/lib';
 use t_SQL_SyntaxModel_SkipID;
-use SQL::SyntaxModel::SkipID 0.14;
-use SQL::SyntaxModel::SkipID::L::en 0.04;
+use SQL::SyntaxModel::SkipID 0.30;
+use SQL::SyntaxModel::SkipID::L::en 0.05;
 $loaded = 1;
 print "ok 1\n";
 use strict;
@@ -63,7 +64,7 @@ eval {
 
 	message( "Now check for missing SSM node values ..." );
 
-	$model->with_all_nodes_test_mandatory_attributes();
+	$model->test_deferrable_constraints();
 	result( 1, "verify mandatory attributes are set" );
 
 	message( "Now see if the output is correct ..." );

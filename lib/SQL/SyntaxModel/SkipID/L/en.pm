@@ -11,7 +11,7 @@ use 5.006;
 use strict;
 use warnings;
 use vars qw($VERSION);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 ######################################################################
 
@@ -45,28 +45,27 @@ PARTICULAR PURPOSE.
 
 ######################################################################
 
+my $CC = 'SQL::SyntaxModel::SkipID::Container';
+my $CN = 'SQL::SyntaxModel::SkipID::Node';
+
 my %text_strings = (
 	'SSMSID_C_CR_NODE_TREE_NO_ARGS' => 
-		"create_node_tree(): missing argument",
-	'SSMSID_C_CR_NODE_TREE_NO_PRIMARY_P' => 
-		"create_node_tree(): invalid argument list; ".
-		"the Node you are trying to create, of type '{TYPE}' and id ".
-		"'{ID}', has no primary parent Node, and one is required",
+		"$CC.create_node_tree(): missing argument",
 
-	'SSMSID_N_SET_AT_NREF_NO_ID_MATCH' => 
-		"set_node_ref_attribute(): invalid ATTRS argument element; ".
+	'SSMSID_N_SET_NREF_AT_NO_ID_MATCH' => 
+		"$CN.set_node_ref_attribute(): invalid ATTRS argument element; ".
 		"when trying to set '{ATNM}' attribute of a '{HOSTTYPE}' Node; ".
 		"'{ARG}' is not a Node ref and it does not ".
 		"match the id of any existing '{EXPTYPE}' Node",
 
 	'SSMSID_N_SET_ATS_BAD_ARGS' => 
-		"set_attributes(): invalid ATTRS argument; ".
+		"$CN.set_attributes(): invalid ATTRS argument; ".
 		"it is not a hash ref, but rather is '{ARG}'; ".
 		"also, nodes of type '{HOSTTYPE}' have no default ".
 		"attribute to associate the given value with",
 
 	'SSMSID_N_CR_NODE_TREE_NO_ARGS' => 
-		"create_child_node_tree(): missing argument",
+		"$CN.create_child_node_tree(): missing argument",
 );
 
 ######################################################################
@@ -134,6 +133,6 @@ user text template string, if there is one, or undef if not.
 
 =head1 SEE ALSO
 
-perl(1), Locale::KeyedText, SQL::SyntaxModel::SkipID, SQL::SyntaxModel::L::*.
+perl(1), Locale::KeyedText, SQL::SyntaxModel::SkipID.
 
 =cut

@@ -11,10 +11,10 @@ use 5.006;
 use strict;
 use warnings;
 use vars qw($VERSION);
-$VERSION = '0.14';
+$VERSION = '0.30';
 
-use Locale::KeyedText 0.04;
-use SQL::SyntaxModel 0.22;
+use Locale::KeyedText 0.06;
+use SQL::SyntaxModel 0.40;
 
 use base qw( SQL::SyntaxModel );
 
@@ -28,8 +28,8 @@ Standard Modules: I<none>
 
 Nonstandard Modules: 
 
-	Locale::KeyedText 0.04 (for error messages)
-	SQL::SyntaxModel 0.22 (parent class)
+	Locale::KeyedText 0.06 (for error messages)
+	SQL::SyntaxModel 0.40 (parent class)
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -98,7 +98,6 @@ my %NODE_TYPES_EXTRA_DETAILS = (
 		'def_attr' => 'base_type',
 		'attr_defaults' => {
 			'base_type' => ['lit','STR_CHAR'],
-			'char_enc' => ['lit','ASCII'],
 		},
 	},
 	'sequence' => {
@@ -261,7 +260,7 @@ sub create_node_tree {
 		$container->_create_node_tree__do_when_parent_not_set( $node );
 	}
 
-	$node->test_mandatory_attributes();
+	$node->test_deferrable_constraints();
 
 	$container->{$CPROP_LAST_NODES}->{$node_type} = $node; # assign reference
 
@@ -284,10 +283,8 @@ sub _create_node_tree__do_when_parent_not_set {
 			last;
 		}
 	}
-	unless( $node->get_parent_node() ) {
-		$container->_throw_error_message( 'SSMSID_C_CR_NODE_TREE_NO_PRIMARY_P', 
-			{ 'TYPE' => $node_type, 'ID' => $node->get_node_id() } );
-	}
+	# If $node->get_parent_node() still has failed to be set, then the subsequent 
+	# call to $node->test_deferrable_constraints() will throw an exception citing it.
 }
 
 sub create_node_trees {
@@ -361,7 +358,7 @@ sub _set_node_ref_attribute__do_when_no_id_match {
 	if( $attr_value_out ) {
 		return( $attr_value_out );
 	} else {
-		$self->_throw_error_message( 'SSMSID_N_SET_AT_NREF_NO_ID_MATCH', 
+		$self->_throw_error_message( 'SSMSID_N_SET_NREF_AT_NO_ID_MATCH', 
 			{ 'ATNM' => $attr_name, 'HOSTTYPE' => $node_type, 
 			'ARG' => $attr_value, 'EXPTYPE' => $exp_node_type } );
 	}
@@ -548,7 +545,7 @@ sub create_child_node_tree {
 	$node->add_child_node( $new_child ); # sets more attributes in new_child
 
 	$new_child->set_attributes( $args->{$ARG_ATTRS} ); # handles node id and all attribute types
-	$new_child->test_mandatory_attributes();
+	$new_child->test_deferrable_constraints();
 
 	$container->{$CPROP_LAST_NODES}->{$child_node_type} = $new_child; # assign reference
 
@@ -745,7 +742,7 @@ See the TODO file for an important message concerning the future of this module.
 
 =head1 SEE ALSO
 
-SQL::SyntaxModel::SkipID::L::*, SQL::SyntaxModel, and other items in its SEE
+SQL::SyntaxModel::SkipID::L::en, SQL::SyntaxModel, and other items in its SEE
 ALSO documentation; also SQL::SyntaxModel::ByTree.
 
 =cut

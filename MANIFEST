@@ -2,10 +2,10 @@ ChangeLog
 INSTALL
 lib/SQL/SyntaxModel/SkipID.pm
 lib/SQL/SyntaxModel/SkipID/L/en.pm
-lib/t_SQL_SyntaxModel_SkipID.pm
 Makefile.PL
 MANIFEST
 META.yml                                Module meta-data (added by MakeMaker)
 ReadMe
+t/lib/t_SQL_SyntaxModel_SkipID.pm
 t/SQL_SyntaxModel_SkipID.t
 TODO

@@ -1,3 +1,64 @@
+2004-09-01   Darren Duncan <perl@DarrenDuncan.net>
+
+	* Release 0.30.
+
+	* From now on, SQL::SyntaxModel::SkipID and its primary distribution will
+	have identical version/release numbers, to help avoid public confusion as
+	to which distribution releases contain which SQL::SyntaxModel::SkipID
+	versions.  This distribution's Makefile.pl now uses "VERSION_FROM =>
+	'lib/SQL/SyntaxModel/SkipID.pm'" rather than "VERSION => N".  As such,
+	SkipID.pm will always have its own version number incremented for any
+	distribution changes, even if the changes are otherwise entirely in other
+	files.  With this first such release, SkipID.pm is now at v0.30, up from
+	v0.14 in the previous release.
+
+	* Other new code file versions are: en.pm v0.05.
+
+	* Updated external dependencies on Locale::KeyedText to v0.06 and on
+	SQL::SyntaxModel to v0.40.
+
+	* Updated all user-text strings in en.pm so that the module-class name
+	appears at the start of each, to the left of the method names.  This should
+	make it easier for users to know which code file among many candidates is
+	generating any error messages they see.
+
+	* Various small changes to ensure that SkipID.pm remains compatible with
+	the latest SQL::SyntaxModel changes.  Also affirmed that SkipID.pm still
+	passes the SQL::SyntaxModel test suite as a drop-in substitution for that
+	module.  Also updated all SEE ALSO docs.
+	
+	* Renamed any calls on [with_all_nodes_]test_mandatory_attributes() to
+	test_deferrable_constraints().
+	
+	* Updated _create_node_tree__do_when_parent_not_set() so it no longer
+	throws an exception on failure to set a primary parent Node; the subsequent
+	call to test_deferrable_constraints() in create_node_tree() would now
+	perform the same assertion; removed the SSMSID_C_CR_NODE_TREE_NO_PRIMARY_P
+	user message from en.pm.  Renamed the SSMSID_N_SET_AT_NREF_NO_ID_MATCH user
+	message to SSMSID_N_SET_NREF_AT_NO_ID_MATCH.
+
+	* Updated %NODE_TYPES_EXTRA_DETAILS in SkipID.pm for 'domain' Nodes so that
+	there is no longer an 'attr_defaults' for 'char_enc'.  Before the change,
+	SkipID.pm was adding a char_enc attribute to all domain Nodes, even those
+	that were not the STR_CHAR; that behaviour was so very, very wrong.
+
+	* Moved this distribution's t_*.pm file from the /lib directory to a new
+	/t/lib directory, so that it doesn't pollute the user's install
+	directories, and so the distribution is better organized on the whole.
+	Added a "use lib 't/lib';" to SQL_SyntaxModel_SkipID.t in order to make the
+	move work.  No changes to the tests themselves, except for any mentioned
+	below here.  Updated the MANIFEST.
+
+	* Updated t_SQL_SyntaxModel_SkipID.pm to transpose the 'domain' Node
+	attributes 'num_precision' and 'num_scale'.  This actually corresponds to a
+	SQL::SyntaxModel change made on 2004-04-10 with v0.16, but only just with
+	v0.40 do SQL::SyntaxModel's constraints flag the SkipID.pm test data error.
+
+	* Updated t_SQL_SyntaxModel_SkipID.pm to add 'char_enc' attributes to 6
+	'domain' Nodes that needed them, since 'char_enc' no longer has a default
+	value.  Also updated the expected output XML string to remove all of the
+	'char_enc' from non-STR_CHAR domain Nodes.
+
 2004-06-29   Darren Duncan <perl@DarrenDuncan.net>
 
 	* Release 0.29.
@@ -28,7 +89,7 @@
 	going from 45K down to 28K.
 
 	* Added a 5th test to the test suite that explicitely makes sure that all 
-	the mandatory attributes in the generated model are set.  ByTree.pm is 
+	the mandatory attributes in the generated model are set.  SkipID.pm is 
 	supposed to do this internally, but the test checks in case it doesn't.
 
 2004-03-22   Darren Duncan <perl@DarrenDuncan.net>
