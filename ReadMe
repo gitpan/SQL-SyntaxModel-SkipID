@@ -1,0 +1,80 @@
+                   SQL SYNTAX MODEL SKIP ID
+----------------------------------------------------------------------
+
+by Darren Duncan <perl@DarrenDuncan.net>
+
+CONTENTS
+
+* Preface
+* Keeping Up To Date
+* Dependencies
+* Support
+* Credits
+* Copyright And License
+
+PREFACE
+
+This distribution features the Perl 5 module named "SQL::SyntaxModel::SkipID";
+see the file lib/SQL/SyntaxModel/SkipID.pm for the main documentation, which is
+in POD format.  The distribution also includes a ChangeLog file to say what
+changes already happened, and a TODO file to say what changes have yet to
+happen.  The file INSTALL should help with installation issues.  Read below for
+how to get support or keep up to date, know this distribution's dependencies,
+or read the credits or copyright and license.
+
+KEEPING UP TO DATE
+
+My module set is constantly under development.  You should be able to find the
+newest versions at my website, "http://www.DarrenDuncan.net", on the page called
+"Perl Libraries I Made" (name subject to change).  They can also be found on CPAN
+under the author name of "DUNCAND".  
+
+I am inclined to update the copies on my web site more often, but those
+intermediate versions are more likely to have been tested less, and the modules
+may be updated day by day without increasing the version numbers.  However, the
+copies on CPAN are guaranteed to have unique version numbers when the module has
+changed.
+
+DEPENDENCIES
+
+Perl Version: 5.006
+
+Standard Modules: none
+
+Nonstandard Modules: 
+
+	Locale::KeyedText 0.03 (for error messages)
+	SQL::SyntaxModel 0.15 (parent class)
+
+This module doesn't require anything else.
+
+SUPPORT
+
+Currently I don't have any support arranged with other people, lists, newsgroups,
+or otherwise.  Feel free to ask me if you can't figure things out on your own, or
+another person whom you know has used this.  I may start a mailing list for 
+support issues later, so that users of my modules can help each other with them.
+
+CREDITS
+
+None besides myself so far.
+
+COPYRIGHT AND LICENSE
+
+This module is Copyright (c) 1999-2004, Darren R. Duncan.  All rights reserved.
+Address comments, suggestions, and bug reports to B<perl@DarrenDuncan.net>, or
+visit "http://www.DarrenDuncan.net" for more information.
+
+This module is free software; you can redistribute it and/or modify it under
+the same terms as Perl 5.8 itself.
+
+Any versions of this module that you modify and distribute must carry prominent
+notices stating that you changed the files and the date of any changes, in
+addition to preserving this original copyright notice and other credits.  This
+module is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+
+FIN
+
+Share and Enjoy!

@@ -1,0 +1,25 @@
+Please note that no further development is planned for this module.  
+
+Its reason to exist so far has 3 main aspects: 1. To preserve functionality
+that was once developed in SQL::SyntaxModel and later stripped from it, for
+historical posterity or for learning from; 2. To help test SQL::SyntaxModel
+through its further development by exercising parts of it that other types of
+tests didn't touch, including the ability to be sub-classed, and this allowed
+me to expose bugs or design flaws in SQL::SyntaxModel a lot sooner; 3. to serve
+as an example to future module or application builders on ways that
+SQL::SyntaxModel can be used or extended.
+
+While I may occasionally give attention to this module, such as to keep it
+compatible with changes to the parent class and test said parent, I will mostly
+be ignoring this module from now on.  The parent and some other users of it
+will keep my attention instead.
+
+Note that I forsaw this module's short life and intentionally gave it a name
+which I thought other people would not want to use for a module themselves.
+
+If you would like to make a new module of your own which conceptually replaces
+this one, and does the job properly, then you have my blessing.  But please
+tell me about it so I can add a reference to it.  You may also blatantly copy
+any code from this module to your own, though I request to be credited.  Or
+alternately, if you wish to become the primary maintainer of this actual module
+with respect to CPAN, then please write me to arrange it (and credit me).
