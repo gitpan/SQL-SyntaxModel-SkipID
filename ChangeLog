@@ -1,3 +1,36 @@
+2004-06-29   Darren Duncan <perl@DarrenDuncan.net>
+
+	* Release 0.29.
+
+	* Updated external dependencies on Locale::KeyedText to v0.04 and on
+	SQL::SyntaxModel to v0.22.
+
+	* This release is a small maintenance update to ensure that SkipID.pm (now
+	v0.14) remains compatible with the latest SQL::SyntaxModel changes.  Most
+	of the changes are in the test suite's set of input data and expected
+	output data, but some changes were in the NODE_TYPES_EXTRA_DETAILS constant
+	data in SkipID itself.  Beyond that, SkipID's API is identical to before.
+
+	* Removed class property 'CPROP_HIGH_IDS' because it is now redundant with
+	a new SQL::SyntaxModel feature; SkipID.pm code which used to set the old
+	property was removed, and code which used to read it now calls
+	SQL::SyntaxModel's get_next_free_node_id() method instead.  Changed methods
+	are: Container.new(), Container.create_node_tree(),
+	Node.create_child_node_tree().
+
+	* Removed the long CONTRIVED EXAMPLE documentation section from SkipID.pm,
+	which was redundant with the content of the test script/module files
+	anyway, and seriously bloated the module.  Also updated the SYNOPSIS 
+	documentation to point users to the script/module files for code examples, 
+	rather than the now-removed documentation.  No other docs changes.
+
+	* Following the above changes, SkipID.pm is now 38% smaller than before, 
+	going from 45K down to 28K.
+
+	* Added a 5th test to the test suite that explicitely makes sure that all 
+	the mandatory attributes in the generated model are set.  ByTree.pm is 
+	supposed to do this internally, but the test checks in case it doesn't.
+
 2004-03-22   Darren Duncan <perl@DarrenDuncan.net>
 
 	* Release 0.28.

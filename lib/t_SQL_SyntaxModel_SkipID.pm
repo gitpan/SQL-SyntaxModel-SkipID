@@ -13,6 +13,8 @@ sub create_and_populate_model {
 
 	my $model = $class->new_container();
 
+	$model->create_node_trees( ['catalog', 'owner', 'schema'] );
+
 	$model->create_node_trees( [ map { { 'NODE_TYPE' => 'domain', 'ATTRS' => $_ } } (
 		{ 'name' => 'bin1k' , 'base_type' => 'STR_BIT', 'max_octets' =>  1_000, },
 		{ 'name' => 'bin32k', 'base_type' => 'STR_BIT', 'max_octets' => 32_000, },
@@ -38,8 +40,8 @@ sub create_and_populate_model {
 		{ 'name' => 'dec10p2', 'base_type' => 'NUM_EXA', 'num_scale' =>  10, 'num_precision' => 2, },
 		{ 'name' => 'dec255' , 'base_type' => 'NUM_EXA', 'num_scale' => 255, },
 		{ 'name' => 'boolean', 'base_type' => 'BOOLEAN', },
-		{ 'name' => 'datetime', 'base_type' => 'DATETIME', 'calendar' => 'ABS', },
-		{ 'name' => 'dtchines', 'base_type' => 'DATETIME', 'calendar' => 'CHI', },
+		{ 'name' => 'datetime', 'base_type' => 'DATM_FULL', 'calendar' => 'ABS', },
+		{ 'name' => 'dtchines', 'base_type' => 'DATM_FULL', 'calendar' => 'CHI', },
 		{ 'name' => 'sex'   , 'base_type' => 'STR_CHAR', 'max_chars' =>     1, },
 		{ 'name' => 'str20' , 'base_type' => 'STR_CHAR', 'max_chars' =>    20, },
 		{ 'name' => 'str100', 'base_type' => 'STR_CHAR', 'max_chars' =>   100, },
@@ -47,8 +49,6 @@ sub create_and_populate_model {
 		{ 'name' => 'entitynm', 'base_type' => 'STR_CHAR', 'max_chars' =>  30, },
 		{ 'name' => 'generic' , 'base_type' => 'STR_CHAR', 'max_chars' => 250, },
 	) ] );
-
-	$model->create_node_trees( ['catalog', 'owner', 'schema'] );
 
 	$model->create_node_tree( { 'NODE_TYPE' => 'table', 
 			'ATTRS' => { 'name' => 'person', }, 'CHILDREN' => [ 
@@ -114,20 +114,20 @@ sub create_and_populate_model {
 			{ 'view_part' => 'RESULT', 'view_col' => 'mother_name', 'expr_type' => 'COL', 'src_col' => ['name'     ,'mother'], },
 		) ),
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'WHERE', 
-				'expr_type' => 'SFUNC', 'sfunc' => 'AND', }, 'CHILDREN' => [ 
+				'expr_type' => 'SFUNC', 'call_sfunc' => 'AND', }, 'CHILDREN' => [ 
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-					'expr_type' => 'SFUNC', 'sfunc' => 'LIKE', }, 'CHILDREN' => [ 
+					'expr_type' => 'SFUNC', 'call_sfunc' => 'LIKE', }, 'CHILDREN' => [ 
 				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
 					'expr_type' => 'COL', 'src_col' => ['name','father'], }, },
-				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-					'expr_type' => 'VAR', }, }, #'routine_var' => 'srchw_fa',
+#				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
+#					'expr_type' => 'ARG', 'routine_arg' => 'srchw_fa', }, },
 			] },
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-					'expr_type' => 'SFUNC', 'sfunc' => 'LIKE', }, 'CHILDREN' => [ 
+					'expr_type' => 'SFUNC', 'call_sfunc' => 'LIKE', }, 'CHILDREN' => [ 
 				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
 					'expr_type' => 'COL', 'src_col' => ['name','mother'], }, },
-				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-					'expr_type' => 'VAR', }, }, #'routine_var' => 'srchw_mo',
+#				{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
+#					'expr_type' => 'ARG', 'routine_arg' => 'srchw_mo', }, },
 			] },
 		] },
 	] } );
@@ -233,11 +233,11 @@ sub create_and_populate_model {
 			{ 'view_part' => 'RESULT', 'view_col' => 'comments'     , 'expr_type' => 'COL', 'src_col' => ['comments'     ,'user_profile'], },
 		) ),
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'WHERE', 
-				'expr_type' => 'SFUNC', 'sfunc' => 'EQ', }, 'CHILDREN' => [ 
+				'expr_type' => 'SFUNC', 'call_sfunc' => 'EQ', }, 'CHILDREN' => [ 
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
 				'expr_type' => 'COL', 'src_col' => ['user_id','user_auth'], }, },
-			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-				'expr_type' => 'VAR', }, }, #'routine_var' => 'curr_uid',
+#			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
+#				'expr_type' => 'ARG', 'routine_arg' => 'curr_uid', }, },
 		] },
 	] } );
 
@@ -269,25 +269,25 @@ sub create_and_populate_model {
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'RESULT', 
 			'view_col' => 'theme_name', 'expr_type' => 'COL', 'src_col' => ['pref_value','user_pref'], }, },
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'RESULT', 
-				'view_col' => 'theme_count', 'expr_type' => 'SFUNC', 'sfunc' => 'GCOUNT', }, 'CHILDREN' => [ 
+				'view_col' => 'theme_count', 'expr_type' => 'SFUNC', 'call_sfunc' => 'COUNT', }, 'CHILDREN' => [ 
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
 				'expr_type' => 'COL', 'src_col' => ['pref_value','user_pref'], }, },
 		] },
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'WHERE', 
-				'expr_type' => 'SFUNC', 'sfunc' => 'EQ', }, 'CHILDREN' => [ 
+				'expr_type' => 'SFUNC', 'call_sfunc' => 'EQ', }, 'CHILDREN' => [ 
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
 				'expr_type' => 'COL', 'src_col' => ['pref_name','user_pref'], }, },
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-				'expr_type' => 'LIT', 'lit_val' => 'theme', }, },
+				'expr_type' => 'LIT', 'domain' => 'str30', 'lit_val' => 'theme', }, },
 		] },
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'GROUP', 
 			'expr_type' => 'COL', 'src_col' => ['pref_value','user_pref'], }, },
 		{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 'view_part' => 'HAVING', 
-				'expr_type' => 'SFUNC', 'sfunc' => 'GT', }, 'CHILDREN' => [ 
+				'expr_type' => 'SFUNC', 'call_sfunc' => 'GT', }, 'CHILDREN' => [ 
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-				'expr_type' => 'SFUNC', 'sfunc' => 'GCOUNT', }, },
+				'expr_type' => 'SFUNC', 'call_sfunc' => 'COUNT', }, },
 			{ 'NODE_TYPE' => 'view_expr', 'ATTRS' => { 
-				'expr_type' => 'LIT', 'lit_val' => '1', }, },
+				'expr_type' => 'LIT', 'domain' => 'int', 'lit_val' => '1', }, },
 		] },
 	] } );
 
@@ -299,39 +299,38 @@ sub create_and_populate_model {
 sub expected_model_xml_output {
 	return(
 '<root>
-	<elements>
-		<domain id="1" name="bin1k" base_type="STR_BIT" max_octets="1000" />
-		<domain id="2" name="bin32k" base_type="STR_BIT" max_octets="32000" />
-		<domain id="3" name="str4" base_type="STR_CHAR" max_chars="4" store_fixed="1" char_enc="ASCII" trim_white="1" uc_latin="1" pad_char=" " trim_pad="1" />
-		<domain id="4" name="str10" base_type="STR_CHAR" max_chars="10" store_fixed="1" char_enc="ASCII" trim_white="1" pad_char=" " trim_pad="1" />
-		<domain id="5" name="str30" base_type="STR_CHAR" max_chars="30" char_enc="ASCII" trim_white="1" />
-		<domain id="6" name="str2k" base_type="STR_CHAR" max_chars="2000" char_enc="UTF8" />
-		<domain id="7" name="byte" base_type="NUM_INT" num_scale="3" />
-		<domain id="8" name="short" base_type="NUM_INT" num_scale="5" />
-		<domain id="9" name="int" base_type="NUM_INT" num_scale="10" />
-		<domain id="10" name="long" base_type="NUM_INT" num_scale="19" />
-		<domain id="11" name="ubyte" base_type="NUM_INT" num_scale="3" num_unsigned="1" />
-		<domain id="12" name="ushort" base_type="NUM_INT" num_scale="5" num_unsigned="1" />
-		<domain id="13" name="uint" base_type="NUM_INT" num_scale="10" num_unsigned="1" />
-		<domain id="14" name="ulong" base_type="NUM_INT" num_scale="19" num_unsigned="1" />
-		<domain id="15" name="float" base_type="NUM_APR" num_octets="4" />
-		<domain id="16" name="double" base_type="NUM_APR" num_octets="8" />
-		<domain id="17" name="dec10p2" base_type="NUM_EXA" num_scale="10" num_precision="2" />
-		<domain id="18" name="dec255" base_type="NUM_EXA" num_scale="255" />
-		<domain id="19" name="boolean" base_type="BOOLEAN" />
-		<domain id="20" name="datetime" base_type="DATETIME" calendar="ABS" />
-		<domain id="21" name="dtchines" base_type="DATETIME" calendar="CHI" />
-		<domain id="22" name="sex" base_type="STR_CHAR" max_chars="1" />
-		<domain id="23" name="str20" base_type="STR_CHAR" max_chars="20" />
-		<domain id="24" name="str100" base_type="STR_CHAR" max_chars="100" />
-		<domain id="25" name="str250" base_type="STR_CHAR" max_chars="250" />
-		<domain id="26" name="entitynm" base_type="STR_CHAR" max_chars="30" />
-		<domain id="27" name="generic" base_type="STR_CHAR" max_chars="250" />
-	</elements>
+	<elements />
 	<blueprints>
 		<catalog id="1">
 			<owner id="1" catalog="1" />
-			<schema id="1" catalog="1" owner="1">
+			<schema id="1" catalog="1" name="data" owner="1">
+				<domain id="1" schema="1" name="bin1k" base_type="STR_BIT" max_octets="1000" char_enc="ASCII" />
+				<domain id="2" schema="1" name="bin32k" base_type="STR_BIT" max_octets="32000" char_enc="ASCII" />
+				<domain id="3" schema="1" name="str4" base_type="STR_CHAR" max_chars="4" store_fixed="1" char_enc="ASCII" trim_white="1" uc_latin="1" pad_char=" " trim_pad="1" />
+				<domain id="4" schema="1" name="str10" base_type="STR_CHAR" max_chars="10" store_fixed="1" char_enc="ASCII" trim_white="1" pad_char=" " trim_pad="1" />
+				<domain id="5" schema="1" name="str30" base_type="STR_CHAR" max_chars="30" char_enc="ASCII" trim_white="1" />
+				<domain id="6" schema="1" name="str2k" base_type="STR_CHAR" max_chars="2000" char_enc="UTF8" />
+				<domain id="7" schema="1" name="byte" base_type="NUM_INT" num_scale="3" char_enc="ASCII" />
+				<domain id="8" schema="1" name="short" base_type="NUM_INT" num_scale="5" char_enc="ASCII" />
+				<domain id="9" schema="1" name="int" base_type="NUM_INT" num_scale="10" char_enc="ASCII" />
+				<domain id="10" schema="1" name="long" base_type="NUM_INT" num_scale="19" char_enc="ASCII" />
+				<domain id="11" schema="1" name="ubyte" base_type="NUM_INT" num_scale="3" num_unsigned="1" char_enc="ASCII" />
+				<domain id="12" schema="1" name="ushort" base_type="NUM_INT" num_scale="5" num_unsigned="1" char_enc="ASCII" />
+				<domain id="13" schema="1" name="uint" base_type="NUM_INT" num_scale="10" num_unsigned="1" char_enc="ASCII" />
+				<domain id="14" schema="1" name="ulong" base_type="NUM_INT" num_scale="19" num_unsigned="1" char_enc="ASCII" />
+				<domain id="15" schema="1" name="float" base_type="NUM_APR" num_octets="4" char_enc="ASCII" />
+				<domain id="16" schema="1" name="double" base_type="NUM_APR" num_octets="8" char_enc="ASCII" />
+				<domain id="17" schema="1" name="dec10p2" base_type="NUM_EXA" num_precision="2" num_scale="10" char_enc="ASCII" />
+				<domain id="18" schema="1" name="dec255" base_type="NUM_EXA" num_scale="255" char_enc="ASCII" />
+				<domain id="19" schema="1" name="boolean" base_type="BOOLEAN" char_enc="ASCII" />
+				<domain id="20" schema="1" name="datetime" base_type="DATM_FULL" char_enc="ASCII" calendar="ABS" />
+				<domain id="21" schema="1" name="dtchines" base_type="DATM_FULL" char_enc="ASCII" calendar="CHI" />
+				<domain id="22" schema="1" name="sex" base_type="STR_CHAR" max_chars="1" char_enc="ASCII" />
+				<domain id="23" schema="1" name="str20" base_type="STR_CHAR" max_chars="20" char_enc="ASCII" />
+				<domain id="24" schema="1" name="str100" base_type="STR_CHAR" max_chars="100" char_enc="ASCII" />
+				<domain id="25" schema="1" name="str250" base_type="STR_CHAR" max_chars="250" char_enc="ASCII" />
+				<domain id="26" schema="1" name="entitynm" base_type="STR_CHAR" max_chars="30" char_enc="ASCII" />
+				<domain id="27" schema="1" name="generic" base_type="STR_CHAR" max_chars="250" char_enc="ASCII" />
 				<table id="1" schema="1" name="person">
 					<table_col id="1" table="1" name="person_id" domain="9" mandatory="1" default_val="1" auto_inc="1" />
 					<table_col id="2" table="1" name="alternate_id" domain="23" mandatory="0" />
@@ -352,10 +351,10 @@ sub expected_model_xml_output {
 						<table_ind_col id="4" table_ind="4" table_col="6" f_table_col="1" />
 					</table_ind>
 				</table>
-				<view id="1" view_context="SCHEMA" view_type="MATCH" schema="1" name="person" may_write="1">
+				<view id="1" view_type="MATCH" schema="1" name="person" may_write="1">
 					<view_src id="1" view="1" name="person" match_table="1" />
 				</view>
-				<view id="2" view_context="SCHEMA" view_type="MULTIPLE" schema="1" name="person_with_parents" may_write="0">
+				<view id="2" view_type="MULTIPLE" schema="1" name="person_with_parents" may_write="0">
 					<view_col id="1" view="2" name="self_id" domain="9" />
 					<view_col id="2" view="2" name="self_name" domain="24" />
 					<view_col id="3" view="2" name="father_id" domain="9" />
@@ -388,14 +387,12 @@ sub expected_model_xml_output {
 					<view_expr id="4" expr_type="COL" view="2" view_part="RESULT" view_col="4" src_col="6" />
 					<view_expr id="5" expr_type="COL" view="2" view_part="RESULT" view_col="5" src_col="7" />
 					<view_expr id="6" expr_type="COL" view="2" view_part="RESULT" view_col="6" src_col="8" />
-					<view_expr id="7" expr_type="SFUNC" view="2" view_part="WHERE">
-						<view_expr id="8" expr_type="SFUNC" p_expr="7">
+					<view_expr id="7" expr_type="SFUNC" view="2" view_part="WHERE" call_sfunc="AND">
+						<view_expr id="8" expr_type="SFUNC" p_expr="7" call_sfunc="LIKE">
 							<view_expr id="9" expr_type="COL" p_expr="8" src_col="6" />
-							<view_expr id="10" expr_type="VAR" p_expr="8" />
 						</view_expr>
-						<view_expr id="11" expr_type="SFUNC" p_expr="7">
-							<view_expr id="12" expr_type="COL" p_expr="11" src_col="8" />
-							<view_expr id="13" expr_type="VAR" p_expr="11" />
+						<view_expr id="10" expr_type="SFUNC" p_expr="7" call_sfunc="LIKE">
+							<view_expr id="11" expr_type="COL" p_expr="10" src_col="8" />
 						</view_expr>
 					</view_expr>
 				</view>
@@ -437,7 +434,7 @@ sub expected_model_xml_output {
 						<table_ind_col id="10" table_ind="10" table_col="14" f_table_col="7" />
 					</table_ind>
 				</table>
-				<view id="3" view_context="SCHEMA" view_type="MULTIPLE" schema="1" name="user" may_write="1">
+				<view id="3" view_type="MULTIPLE" schema="1" name="user" may_write="1">
 					<view_col id="7" view="3" name="user_id" domain="9" />
 					<view_col id="8" view="3" name="login_name" domain="23" />
 					<view_col id="9" view="3" name="login_pass" domain="23" />
@@ -476,24 +473,23 @@ sub expected_model_xml_output {
 					<view_join id="3" view="3" lhs_src="5" rhs_src="6" join_type="LEFT">
 						<view_join_col id="3" join="3" lhs_src_col="9" rhs_src_col="16" />
 					</view_join>
-					<view_expr id="14" expr_type="COL" view="3" view_part="RESULT" view_col="7" src_col="9" />
-					<view_expr id="15" expr_type="COL" view="3" view_part="RESULT" view_col="8" src_col="10" />
-					<view_expr id="16" expr_type="COL" view="3" view_part="RESULT" view_col="9" src_col="11" />
-					<view_expr id="17" expr_type="COL" view="3" view_part="RESULT" view_col="10" src_col="12" />
-					<view_expr id="18" expr_type="COL" view="3" view_part="RESULT" view_col="11" src_col="13" />
-					<view_expr id="19" expr_type="COL" view="3" view_part="RESULT" view_col="12" src_col="14" />
-					<view_expr id="20" expr_type="COL" view="3" view_part="RESULT" view_col="13" src_col="15" />
-					<view_expr id="21" expr_type="COL" view="3" view_part="RESULT" view_col="14" src_col="17" />
-					<view_expr id="22" expr_type="COL" view="3" view_part="RESULT" view_col="15" src_col="18" />
-					<view_expr id="23" expr_type="COL" view="3" view_part="RESULT" view_col="16" src_col="19" />
-					<view_expr id="24" expr_type="COL" view="3" view_part="RESULT" view_col="17" src_col="20" />
-					<view_expr id="25" expr_type="COL" view="3" view_part="RESULT" view_col="18" src_col="21" />
-					<view_expr id="26" expr_type="COL" view="3" view_part="RESULT" view_col="19" src_col="22" />
-					<view_expr id="27" expr_type="COL" view="3" view_part="RESULT" view_col="20" src_col="23" />
-					<view_expr id="28" expr_type="COL" view="3" view_part="RESULT" view_col="21" src_col="24" />
-					<view_expr id="29" expr_type="SFUNC" view="3" view_part="WHERE">
-						<view_expr id="30" expr_type="COL" p_expr="29" src_col="9" />
-						<view_expr id="31" expr_type="VAR" p_expr="29" />
+					<view_expr id="12" expr_type="COL" view="3" view_part="RESULT" view_col="7" src_col="9" />
+					<view_expr id="13" expr_type="COL" view="3" view_part="RESULT" view_col="8" src_col="10" />
+					<view_expr id="14" expr_type="COL" view="3" view_part="RESULT" view_col="9" src_col="11" />
+					<view_expr id="15" expr_type="COL" view="3" view_part="RESULT" view_col="10" src_col="12" />
+					<view_expr id="16" expr_type="COL" view="3" view_part="RESULT" view_col="11" src_col="13" />
+					<view_expr id="17" expr_type="COL" view="3" view_part="RESULT" view_col="12" src_col="14" />
+					<view_expr id="18" expr_type="COL" view="3" view_part="RESULT" view_col="13" src_col="15" />
+					<view_expr id="19" expr_type="COL" view="3" view_part="RESULT" view_col="14" src_col="17" />
+					<view_expr id="20" expr_type="COL" view="3" view_part="RESULT" view_col="15" src_col="18" />
+					<view_expr id="21" expr_type="COL" view="3" view_part="RESULT" view_col="16" src_col="19" />
+					<view_expr id="22" expr_type="COL" view="3" view_part="RESULT" view_col="17" src_col="20" />
+					<view_expr id="23" expr_type="COL" view="3" view_part="RESULT" view_col="18" src_col="21" />
+					<view_expr id="24" expr_type="COL" view="3" view_part="RESULT" view_col="19" src_col="22" />
+					<view_expr id="25" expr_type="COL" view="3" view_part="RESULT" view_col="20" src_col="23" />
+					<view_expr id="26" expr_type="COL" view="3" view_part="RESULT" view_col="21" src_col="24" />
+					<view_expr id="27" expr_type="SFUNC" view="3" view_part="WHERE" call_sfunc="EQ">
+						<view_expr id="28" expr_type="COL" p_expr="27" src_col="9" />
 					</view_expr>
 				</view>
 				<table id="4" schema="1" name="user_pref">
@@ -508,25 +504,25 @@ sub expected_model_xml_output {
 						<table_ind_col id="13" table_ind="12" table_col="23" f_table_col="7" />
 					</table_ind>
 				</table>
-				<view id="4" view_context="SCHEMA" view_type="SINGLE" schema="1" name="user_theme" may_write="0">
+				<view id="4" view_type="SINGLE" schema="1" name="user_theme" may_write="0">
 					<view_col id="22" view="4" name="theme_name" domain="27" />
 					<view_col id="23" view="4" name="theme_count" domain="9" />
 					<view_src id="7" view="4" name="user_pref" match_table="4">
 						<view_src_col id="25" src="7" match_table_col="24" />
 						<view_src_col id="26" src="7" match_table_col="25" />
 					</view_src>
-					<view_expr id="32" expr_type="COL" view="4" view_part="RESULT" view_col="22" src_col="26" />
-					<view_expr id="33" expr_type="SFUNC" view="4" view_part="RESULT" view_col="23">
-						<view_expr id="34" expr_type="COL" p_expr="33" src_col="26" />
+					<view_expr id="29" expr_type="COL" view="4" view_part="RESULT" view_col="22" src_col="26" />
+					<view_expr id="30" expr_type="SFUNC" view="4" view_part="RESULT" view_col="23" call_sfunc="COUNT">
+						<view_expr id="31" expr_type="COL" p_expr="30" src_col="26" />
 					</view_expr>
-					<view_expr id="35" expr_type="SFUNC" view="4" view_part="WHERE">
-						<view_expr id="36" expr_type="COL" p_expr="35" src_col="25" />
-						<view_expr id="37" expr_type="LIT" p_expr="35" lit_val="theme" />
+					<view_expr id="32" expr_type="SFUNC" view="4" view_part="WHERE" call_sfunc="EQ">
+						<view_expr id="33" expr_type="COL" p_expr="32" src_col="25" />
+						<view_expr id="34" expr_type="LIT" p_expr="32" domain="5" lit_val="theme" />
 					</view_expr>
-					<view_expr id="38" expr_type="COL" view="4" view_part="GROUP" src_col="26" />
-					<view_expr id="39" expr_type="SFUNC" view="4" view_part="HAVING">
-						<view_expr id="40" expr_type="SFUNC" p_expr="39" />
-						<view_expr id="41" expr_type="LIT" p_expr="39" lit_val="1" />
+					<view_expr id="35" expr_type="COL" view="4" view_part="GROUP" src_col="26" />
+					<view_expr id="36" expr_type="SFUNC" view="4" view_part="HAVING" call_sfunc="GT">
+						<view_expr id="37" expr_type="SFUNC" p_expr="36" call_sfunc="COUNT" />
+						<view_expr id="38" expr_type="LIT" p_expr="36" domain="9" lit_val="1" />
 					</view_expr>
 				</view>
 			</schema>
